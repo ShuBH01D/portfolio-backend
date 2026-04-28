@@ -3,10 +3,15 @@ const cors = require("cors");
 
 const app = express();
 
-// 🔥 CORS fix
+// 🔥 IMPORTANT CORS CONFIG
 app.use(cors({
-  origin: "*"
+  origin: "*", // testing साठी
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// 🔥 Preflight handle (VERY IMPORTANT)
+app.options("*", cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,14 +20,12 @@ app.use(express.urlencoded({ extended: true }));
 const contactRoutes = require("./routes/contactRoutes");
 app.use("/api", contactRoutes);
 
-// root route
+// root
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// server
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on ${PORT}`);
 });
