@@ -3,17 +3,8 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ CORS (proper config)
-const corsOptions = {
-  origin: "*", // production मध्ये specific URL दे
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-};
-
-app.use(cors(corsOptions));
-
-// ✅ IMPORTANT: preflight handle
-app.options("/api/*", cors(corsOptions));
+// ✅ simplest working CORS
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
