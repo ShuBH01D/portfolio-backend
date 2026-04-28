@@ -8,10 +8,10 @@ exports.getUsers = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-    console.log("Incoming data:", req.body);
+  console.log("Form Data:", req.body);
 
-    return res.status(200).json({
-        success: true,
-        message: "API working perfectly ✅"
-    });
+  res.json({
+    success: true,
+    message: "Message sent successfully ✅"
+  });
 };
