@@ -3,10 +3,17 @@ const cors = require("cors");
 
 const app = express();
 
-// 🔥 VERY IMPORTANT (put at TOP)
-app.use(cors({
-  origin: "*"
-}));
+// ✅ CORS (proper config)
+const corsOptions = {
+  origin: "*", // production मध्ये specific URL दे
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+app.use(cors(corsOptions));
+
+// ✅ IMPORTANT: preflight handle
+app.options("/api/*", cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
