@@ -3,7 +3,7 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ CORS (simple and safe for now)
+// 🔥 VERY IMPORTANT (put at TOP)
 app.use(cors({
   origin: "*"
 }));
@@ -15,13 +15,12 @@ app.use(express.urlencoded({ extended: true }));
 const contactRoutes = require("./routes/contactRoutes");
 app.use("/api", contactRoutes);
 
-// root
+// test route
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
