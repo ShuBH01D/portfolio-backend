@@ -1,32 +1,56 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db"); //db path
+const db = require("../config/db");
 
-// ✅ POST (already असेल - check कर)
+// ✅ POST: Save contact message
 router.post("/contact", (req, res) => {
-  const { name, email, message } = req.body;
+  const { name, email, subject, phone, message } = req.body;
 
-  const sql = "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)";
+  // 🔍 Basic validation
+  if (!name || !email || !message) {
+    return res.status(400).json({
+      error: "Name, Email and Message are required",
+    });
+  }
 
-  db.query(sql, [name, email, message], (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ error: "Insert failed" });
+  const sql =
+    "INSERT INTO contacts (name, email, subject, phone, message) VALUES (?, ?, ?, ?, ?)";
+
+  db.query(
+    sql,
+    [name, email, subject || null, phone || null, message],
+    (err, result) => {
+      if (err) {
+        console.log("DB Error:", err);
+        return res.status(500).json({
+          error: "Database insert failed",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Message saved successfully",
+      });
     }
-    res.json({ message: "Message saved successfully" });
-  });
+  );
 });
 
-// 🔥 NEW GET API (admin panel साठी)
+// ✅ GET: Fetch all messages (admin use)
 router.get("/contact/messages", (req, res) => {
   const sql = "SELECT * FROM contacts ORDER BY id DESC";
 
   db.query(sql, (err, result) => {
     if (err) {
-      console.log(err);
-      return res.status(500).json({ error: "Fetch failed" });
+      console.log("DB Error:", err);
+      return res.status(500).json({
+        error: "Fetch failed",
+      });
     }
-    res.json(result);
+
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
   });
 });
 

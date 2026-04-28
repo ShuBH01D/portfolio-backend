@@ -12,9 +12,14 @@ app.use(express.urlencoded({ extended: true }));
 const contactRoutes = require("./routes/contactRoutes");
 app.use("/api", contactRoutes);
 
-// server
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+// root route (optional but useful)
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
 });
 
+// server
+const PORT = process.env.PORT || 5000;
 
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
