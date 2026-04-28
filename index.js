@@ -3,8 +3,11 @@ const cors = require("cors");
 
 const app = express();
 
-// middleware
-app.use(cors());
+// 🔥 CORS fix
+app.use(cors({
+  origin: "*"
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -12,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 const contactRoutes = require("./routes/contactRoutes");
 app.use("/api", contactRoutes);
 
-// root route (optional but useful)
+// root route
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
